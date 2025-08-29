@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 // Note: You'll need to install these dependencies if you haven't already
 // npm install lucide-react framer-motion
 // Also, the following are likely custom components from ShadCN UI or similar.
@@ -29,7 +29,7 @@ const Fonts = () => (
 );
 
 // --- Animation Variants ---
-const sectionVariants = {
+const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
