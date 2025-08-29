@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion"
 // Note: You'll need to install these dependencies if you haven't already
 // npm install lucide-react framer-motion
 // Also, the following are likely custom components from ShadCN UI or similar.
@@ -14,14 +14,17 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { Plane, Users, Calendar, Award, Mail, MapPin, ChevronRight, Phone } from "lucide-react";
 
 // --- Animation Variants ---
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
+const sectionVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+  },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
-      ease: "easeOut",
+      duration: 0.5,
+      ease: "easeInOut",
     },
   },
 };
