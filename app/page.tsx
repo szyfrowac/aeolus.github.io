@@ -1,491 +1,255 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Rocket, Drone, Cpu, Cog, Calendar, Users2, Star, Mail, MapPin, ChevronRight, Github, Linkedin, Instagram, Phone, Download, Sun, Moon, ShieldCheck, NotebookText } from "lucide-react";
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
+import { Plane, Users, Calendar, Award, Mail, MapPin, ChevronRight, Phone, Download } from "lucide-react";
 
-// --- Helper components ---
-
-// Define the types for the Section component's props
-interface SectionProps {
-  id: string;
-  children: React.ReactNode;
-  className?: string; // The '?' makes it optional
-}
-
-const Section = ({ id, children, className = "" }: SectionProps) => (
-  <section id={id} className={`scroll-mt-24 py-16 md:py-24 ${className}`}>
-    <div className="mx-auto w-full max-w-6xl px-4 md:px-6">{children}</div>
+// --- Main Section Component ---
+const Section = ({ id, children, className = "", hasSeparator = true }: { id: string, children: React.ReactNode, className?: string, hasSeparator?: boolean }) => (
+  <section id={id} className={`py-20 md:py-28 ${className}`}>
+    <div className="mx-auto w-full max-w-5xl px-4 md:px-6">
+      {children}
+      {hasSeparator && <hr className="mt-20 md:mt-28 border-gray-200" />}
+    </div>
   </section>
 );
 
-const Pill = ({ children }: { children: React.ReactNode }) => (
-  <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium">
-    {children}
-  </span>
-);
-
-// Define types for the Stat component's props
-interface StatProps {
-  label: string;
-  value: string;
-  icon: React.ElementType; // This is the type for a component (like an icon)
-}
-
-const Stat = ({ label, value, icon: Icon }: StatProps) => (
-  <div className="flex items-center gap-3">
-    <div className="rounded-2xl border p-3"><Icon className="h-5 w-5" /></div>
-    <div>
-      <div className="text-2xl font-semibold leading-none">{value}</div>
-      <div className="text-sm text-muted-foreground">{label}</div>
-    </div>
-  </div>
-);
-
 // --- Data ---
-const growth = [
-  { year: "2021", members: 18 },
-  { year: "2022", members: 36 },
-  { year: "2023", members: 54 },
-  { year: "2024", members: 72 },
-  { year: "2025", members: 96 },
-];
-
 const projects = [
   {
-    title: "Autonomous Drone – SAE AeroTHON 2025",
-    blurb: "PX4/MAVSDK stack with autonomous mission logic, payload drop, and thermal+RGB fusion for disaster detection.",
-    tags: ["PX4", "MAVSDK", "YOLO", "Thermal-RGB"],
+    title: "SAE Aero Design Competition",
+    blurb: "Designing and fabricating a heavy-lift, remote-controlled aircraft to compete against universities nationwide, focusing on aerodynamics, structural integrity, and payload optimization.",
+    tags: ["Aerodynamics", "Fabrication", "Competition"],
   },
   {
-    title: "URC Rover – Visual Odometry",
-    blurb: "Robust VO pipeline for rough terrain with feature tracking and outlier rejection.",
-    tags: ["OpenCV", "VO", "Robotics"],
+    title: "Autonomous Drone for Delivery",
+    blurb: "Developing a complete software and hardware stack for autonomous navigation and package delivery, utilizing PX4, ROS, and computer vision for obstacle avoidance.",
+    tags: ["PX4/ROS", "Autonomy", "Computer Vision"],
   },
   {
-    title: "Drone Racing League",
-    blurb: "High-speed racing and tuning; PID, frame optimization, and safety SOPs.",
-    tags: ["Tuning", "PID", "SOPs"],
+    title: "FPV Drone Racing Team",
+    blurb: "Building and tuning high-performance racing drones for inter-collegiate competitions, with a focus on PID tuning, frame optimization, and low-latency video systems.",
+    tags: ["FPV Racing", "PID Tuning", "Hardware"],
   },
   {
-    title: "FFT-on-FPGA for Edge Perception",
-    blurb: "8-point radix-2 pipeline with shared FP IP, stage-wise FSM control.",
-    tags: ["FPGA", "Verilog", "DSP"],
+    title: "UAV-based Environmental Monitoring",
+    blurb: "A research-oriented project using drones equipped with sensors to collect atmospheric and agricultural data, in collaboration with university research departments.",
+    tags: ["Research", "Sensor Integration", "Data Analysis"],
   },
 ];
 
 const faq = [
   {
-    q: "Who can join Aeolus?",
-    a: "Any BITS Pilani–Hyderabad student passionate about drones, robotics, or systems engineering—across all disciplines."
+    q: "Who is eligible to join Aeolus?",
+    a: "Any current student of BITS Pilani, Hyderabad Campus, from any discipline or year of study, is welcome to apply. Passion for aviation and robotics is the only prerequisite.",
   },
   {
-    q: "Do I need prior experience?",
-    a: "No. We run bootcamps in avionics (CV, path planning), mechanical (CAD, CFD, manufacturing), and ops (web, content, sponsorship)."
+    q: "Do I need any prior experience in robotics or aviation?",
+    a: "No. We welcome beginners and provide comprehensive training and workshops through our various sub-teams. We value enthusiasm and a willingness to learn above all.",
   },
   {
-    q: "How do teams work?",
-    a: "Teams are cross-functional: Avionics, Mechanical, and Management (sponsorship, web dev, design, content). You can rotate in your first semester."
+    q: "What is the time commitment?",
+    a: "The time commitment varies depending on your role and the project cycle. Members typically dedicate 5-10 hours per week, with more during competition seasons.",
   },
   {
-    q: "How do I get sponsorship details?",
-    a: "Download our pitch deck and PDR highlights from the Sponsors section below or email us."
+    q: "How does the recruitment process work?",
+    a: "We conduct a recruitment drive at the beginning of each academic year, which includes an application form followed by a short technical and personal interview.",
   },
 ];
 
-// --- Main ---
+// --- Main Component ---
 export default function AeolusBPHC() {
-  const [dark, setDark] = useState(false);
   const year = new Date().getFullYear();
 
-  // toggle dark on <html> for tailwind preview
-  React.useEffect(() => {
-    const root = document.documentElement;
-    if (dark) root.classList.add("dark"); else root.classList.remove("dark");
-  }, [dark]);
+  // --- Theme Style Constants ---
+  const textColor = "text-navy-900";
+  const mutedTextColor = "text-navy-700";
+  const primaryButtonClasses = "bg-crimson-600 text-white hover:bg-crimson-700 transition-colors shadow-sm";
+  const secondaryButtonClasses = "bg-white text-crimson-600 border border-crimson-200 hover:bg-crimson-50 transition-colors";
+  const cardClasses = "bg-white border border-gray-200 rounded-lg shadow-sm";
 
   const navItems = [
-    { id: "about", label: "About" },
-    { id: "teams", label: "Teams" },
+    { id: "about", label: "About Us" },
     { id: "projects", label: "Projects" },
-    { id: "events", label: "Events" },
-    { id: "sponsors", label: "Sponsors" },
     { id: "join", label: "Join Us" },
     { id: "contact", label: "Contact" },
   ];
 
+  const Stat = ({ label, value, icon: Icon }: { label: string, value: string, icon: React.ElementType }) => (
+    <div className="text-center">
+      <Icon className={`mx-auto h-10 w-10 mb-2 ${textColor}`} strokeWidth={1.5} />
+      <div className={`text-3xl font-bold font-serif ${textColor}`}>{value}</div>
+      <div className={`text-sm ${mutedTextColor}`}>{label}</div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Nav */}
-      <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 md:py-4">
-          <a href="#home" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl border">
-              <Drone className="h-5 w-5" />
-            </div>
+    <div className="min-h-screen bg-cream-50 font-sans text-navy-800 antialiased">
+      {/* --- Navigation --- */}
+      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-lg">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
+          <a href="#home" className="flex items-center gap-3">
+            <Plane className="h-7 w-7 text-crimson-600" />
             <div className="flex flex-col leading-tight">
-              <span className="text-sm text-muted-foreground">BITS Pilani, Hyderabad</span>
-              <span className="text-lg font-semibold">Aeolus — Aerial Robotics</span>
+              <span className={`font-bold text-lg ${textColor}`}>AEOLUS</span>
+              <span className="text-xs text-gray-500">Aerial Robotics Club, BITS Pilani</span>
             </div>
           </a>
-          <nav className="hidden items-center gap-2 md:flex">
+          <nav className="hidden items-center gap-6 md:flex">
             {navItems.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className="rounded-full px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground">
+              <a key={n.id} href={`#${n.id}`} className={`text-sm font-medium ${mutedTextColor} hover:text-crimson-600 transition-colors`}>
                 {n.label}
               </a>
             ))}
-            <Button onClick={() => setDark((d) => !d)} variant="outline" size="icon" className="ml-2" aria-label="Toggle theme">
-              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
           </nav>
         </div>
       </header>
 
-      {/* Hero */}
-      <Section id="home" className="pt-10">
-        <div className="grid items-center gap-8 md:grid-cols-2">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="mb-4 flex flex-wrap items-center gap-2">
-              <Pill><ShieldCheck className="mr-1 h-3 w-3" /> National Top-10 PDR</Pill>
-              <Pill><Star className="mr-1 h-3 w-3" /> Drone Racing League</Pill>
-              <Pill><Cpu className="mr-1 h-3 w-3" /> CV • Path Planning</Pill>
+      <main>
+        {/* --- Hero Section --- */}
+        <section id="home" className="relative h-[80vh] min-h-[600px] bg-cover bg-center" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1433162653522-3827b686e098?q=80&w=2070&auto=format&fit=crop')` }}>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+          <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+              <h1 className="font-serif text-5xl font-bold leading-tight md:text-7xl">
+                Design. Build. Fly.
+              </h1>
+              <p className="mt-4 max-w-2xl text-lg text-gray-200">
+                Aeolus is the premier aerial robotics club of BITS Pilani, Hyderabad, dedicated to excellence in unmanned aerial vehicle technology and innovation.
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-4">
+                <a href="#join"><Button size="lg" className={primaryButtonClasses}>Become a Member <ChevronRight className="ml-1 h-4 w-4" /></Button></a>
+                <a href="#projects"><Button size="lg" className={secondaryButtonClasses}>See Our Work</Button></a>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* --- About Section --- */}
+        <Section id="about">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className={`font-serif text-3xl font-bold ${textColor}`}>Welcome to Aeolus</h2>
+              <p className={`mt-4 text-base leading-relaxed ${mutedTextColor}`}>
+                Founded in 2019, Aeolus is a multidisciplinary student club focused on the research, design, and fabrication of unmanned aerial vehicles (UAVs). Our mission is to provide a platform for students to gain hands-on experience in aerospace engineering and robotics, fostering skills that bridge the gap between academic theory and real-world application.
+                <br/><br/>
+                We participate in prestigious national and international competitions, pushing the boundaries of what student-led teams can achieve in aerial robotics.
+              </p>
             </div>
-            <h1 className="text-4xl font-bold leading-tight md:text-5xl">
-              Building high‑performance autonomous drones & robots
-            </h1>
-            <p className="mt-4 max-w-prose text-lg text-muted-foreground">
-              We’re Aeolus, the aerial robotics club at BITS Pilani—Hyderabad. From autonomous mission stacks to race-tuned quads, we design, build, and compete.
+            <div className="grid grid-cols-2 gap-8">
+              <Stat label="Active Members" value="90+" icon={Users} />
+              <Stat label="Founded" value="2019" icon={Calendar} />
+              <Stat label="Competitions" value="4" icon={Award} />
+              <Stat label="Projects" value="10+" icon={Plane} />
+            </div>
+          </div>
+        </Section>
+
+        {/* --- Projects Section --- */}
+        <Section id="projects">
+          <div className="text-center">
+            <h2 className={`font-serif text-3xl font-bold ${textColor}`}>Our Fleet of Projects</h2>
+            <p className={`mt-2 max-w-3xl mx-auto ${mutedTextColor}`}>
+              Our members collaborate on a diverse range of projects, from competitive aircraft to cutting-edge research in autonomous systems.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a href="#join"><Button size="lg">Join the Team <ChevronRight className="ml-1 h-4 w-4" /></Button></a>
-              <a href="#sponsors"><Button size="lg" variant="outline">Sponsor Us</Button></a>
-            </div>
-            <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
-              <Stat label="Active Members" value="90+" icon={Users2} />
-              <Stat label="Competitions" value="Aerothon, URC" icon={Calendar} />
-              <Stat label="Domains" value="Avionics, Mech, Ops" icon={Cog} />
-              <Stat label="Founded" value="2019" icon={Rocket} />
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
-            <Card className="rounded-3xl">
-              <CardHeader>
-                <CardTitle className="text-xl">Club Snapshot</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-56 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={growth} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
-                      <defs>
-                        <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopOpacity={0.4} />
-                          <stop offset="95%" stopOpacity={0.05} />
-                        </linearGradient>
-                      </defs>
-                      <XAxis dataKey="year" tickLine={false} axisLine={false} />
-                      <YAxis allowDecimals={false} width={28} tickLine={false} axisLine={false} />
-                      <Tooltip cursor={{ opacity: 0.1 }} />
-                      <Area type="monotone" dataKey="members" strokeWidth={2} fillOpacity={1} fill="url(#g)" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="mt-4 text-sm text-muted-foreground">Membership growth over the years.</div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </Section>
-
-      {/* About */}
-      <Section id="about">
-        <div className="grid gap-8 md:grid-cols-3">
-          <div className="md:col-span-2">
-            <h2 className="text-3xl font-bold">About Aeolus</h2>
-            <p className="mt-4 text-muted-foreground">
-              Aeolus is BPHC’s hub for aerial and field robotics. We compete nationally and run campus-wide Drone Racing Leagues. Our technical focus spans avionics—computer vision, perception, controls, and path planning—and mechanical—material selection, frame design, CFD, and manufacturing. We also operate a Management vertical for sponsorships, web, design, and content.
-            </p>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              <Card>
-                <CardHeader className="pb-2"><CardTitle className="text-base">What we build</CardTitle></CardHeader>
-                <CardContent className="text-sm text-muted-foreground">Autonomous drones (PX4/MAVSDK), disaster-detection payloads (YOLO + thermal), race quads, rover subsystems, and custom tools (e.g., FPGA DSP, test benches).</CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="pb-2"><CardTitle className="text-base">How we work</CardTitle></CardHeader>
-                <CardContent className="text-sm text-muted-foreground">Project pods, code reviews, flight-test days, and design-for-manufacture. Safety-first and documentation-driven.</CardContent>
-              </Card>
-            </div>
           </div>
-          <div>
-            <Card className="h-full">
-              <CardHeader className="pb-2"><CardTitle className="text-base">Open Roles</CardTitle></CardHeader>
-              <CardContent className="flex flex-col gap-3 text-sm">
-                <div className="flex items-center justify-between"><span>Avionics – CV/Perception</span><Badge>Hiring</Badge></div>
-                <div className="flex items-center justify-between"><span>Avionics – Planning/Controls</span><Badge>Hiring</Badge></div>
-                <div className="flex items-center justify-between"><span>Mechanical – CAD/CFD</span><Badge>Hiring</Badge></div>
-                <div className="flex items-center justify-between"><span>Ops – Sponsorship & Web</span><Badge>Hiring</Badge></div>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button className="mt-2 w-full" variant="secondary">View Skill Tracks</Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Skill Tracks</DialogTitle>
-                    </DialogHeader>
-                    <div className="grid gap-4 text-sm text-muted-foreground">
-                      <div>
-                        <div className="font-medium text-foreground">Avionics</div>
-                        <ul className="ml-4 list-disc">
-                          <li>Vision: OpenCV, YOLOv8, tracking, thermal fusion</li>
-                          <li>Autonomy: MAVSDK, PX4, mission logic, failsafes</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <div className="font-medium text-foreground">Mechanical</div>
-                        <ul className="ml-4 list-disc">
-                          <li>Frame design, material selection, CFD/FEA</li>
-                          <li>Manufacturing and test jigs</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <div className="font-medium text-foreground">Operations</div>
-                        <ul className="ml-4 list-disc">
-                          <li>Sponsorships, outreach, web/content</li>
-                          <li>Event ops & documentation</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </Section>
-
-      {/* Teams */}
-      <Section id="teams">
-        <h2 className="text-3xl font-bold">Teams</h2>
-        <Tabs defaultValue="avionics" className="mt-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="avionics">Avionics</TabsTrigger>
-            <TabsTrigger value="mechanical">Mechanical</TabsTrigger>
-            <TabsTrigger value="ops">Management</TabsTrigger>
-          </TabsList>
-          <TabsContent value="avionics" className="mt-6">
-            <div className="grid gap-4 md:grid-cols-2">
-              <Card>
-                <CardHeader><CardTitle>Computer Vision</CardTitle></CardHeader>
-                <CardContent className="text-sm text-muted-foreground">Object detection (YOLO), tracking, optical flow, and thermal-RGB fusion for disaster detection. Integration on PX4 via MAVSDK.</CardContent>
-              </Card>
-              <Card>
-                <CardHeader><CardTitle>Autonomy & Controls</CardTitle></CardHeader>
-                <CardContent className="text-sm text-muted-foreground">Mission planning, waypoint logic, state estimation, precision landing, and robust failsafes.</CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-          <TabsContent value="mechanical" className="mt-6">
-            <div className="grid gap-4 md:grid-cols-2">
-              <Card>
-                <CardHeader><CardTitle>Frame & Materials</CardTitle></CardHeader>
-                <CardContent className="text-sm text-muted-foreground">Lightweight, stiff frames with serviceability in mind; material selection and fabrication workflows.</CardContent>
-              </Card>
-              <Card>
-                <CardHeader><CardTitle>CFD & FEA</CardTitle></CardHeader>
-                <CardContent className="text-sm text-muted-foreground">Aerodynamic optimization, thermal management, and structural integrity checks for reliability.</CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-          <TabsContent value="ops" className="mt-6">
-            <div className="grid gap-4 md:grid-cols-2">
-              <Card>
-                <CardHeader><CardTitle>Sponsorships & Outreach</CardTitle></CardHeader>
-                <CardContent className="text-sm text-muted-foreground">Partner engagement, proposals, and brand collaborations to sustain R&D and competitions.</CardContent>
-              </Card>
-              <Card>
-                <CardHeader><CardTitle>Web, Design, Content</CardTitle></CardHeader>
-                <CardContent className="text-sm text-muted-foreground">Club website, social media presence, technical documentation, and event coverage.</CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </Section>
-
-      {/* Projects */}
-      <Section id="projects">
-        <h2 className="text-3xl font-bold">Projects</h2>
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
-          {projects.map((p) => (
-            <Card key={p.title} className="rounded-3xl">
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>{p.title}</span>
-                  <Badge variant="secondary">Ongoing</Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">{p.blurb}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {p.tags.map((t) => (
-                    <Badge key={t} variant="outline">{t}</Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      {/* Events */}
-      <Section id="events">
-        <h2 className="text-3xl font-bold">Events</h2>
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
-          {[
-            { title: "Drone Racing League", desc: "Semestral time trials and finals with safety SOPs.", when: "Every Semester" },
-            { title: "OpenCV for Drones Workshop", desc: "Two-day bootcamp: detection, tracking, obstacle avoidance.", when: "Twice a year" },
-            { title: "Inductions", desc: "Recruitment across Avionics, Mechanical, and Management.", when: "Start of Sem" },
-          ].map((e) => (
-            <Card key={e.title}>
-              <CardHeader>
-                <CardTitle className="text-lg">{e.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">{e.desc}</p>
-                <div className="mt-3 flex items-center gap-2 text-sm"><Calendar className="h-4 w-4" />{e.when}</div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      {/* Sponsors */}
-      <Section id="sponsors">
-        <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold">Sponsors & Partners</h2>
-          <div className="flex gap-2">
-            <Button variant="outline"><Download className="mr-2 h-4 w-4" /> Pitch Deck (PDF)</Button>
-            <Button variant="outline"><Download className="mr-2 h-4 w-4" /> PDR Highlights</Button>
-          </div>
-        </div>
-        <p className="mt-4 text-muted-foreground">We collaborate with industry leaders for components, tooling, software, and mentorship.</p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-          {["IdeaForge", "Robu.in", "PX4", "NVIDIA", "STMicro", "AMD", "PCBPower", "SolidWorks"].map((name) => (
-            <div key={name} className="flex h-24 items-center justify-center rounded-2xl border text-sm font-medium">
-              {name}
-            </div>
-          ))}
-        </div>
-        <Card className="mt-6">
-          <CardHeader><CardTitle>Why sponsor Aeolus?</CardTitle></CardHeader>
-          <CardContent className="grid gap-4 md:grid-cols-3">
-            <div>
-              <div className="font-medium">Campus Reach</div>
-              <div className="text-sm text-muted-foreground">Visibility across 5k+ students and national events.</div>
-            </div>
-            <div>
-              <div className="font-medium">Talent Pipeline</div>
-              <div className="text-sm text-muted-foreground">Hands-on engineers with competition-proven skills.</div>
-            </div>
-            <div>
-              <div className="font-medium">Technical Stories</div>
-              <div className="text-sm text-muted-foreground">Co-branded case studies and workshops.</div>
-            </div>
-          </CardContent>
-        </Card>
-      </Section>
-
-      {/* Join Us */}
-      <Section id="join">
-        <div className="grid items-start gap-8 md:grid-cols-2">
-          <div>
-            <h2 className="text-3xl font-bold">Join Aeolus</h2>
-            <p className="mt-4 text-muted-foreground">We recruit across avionics, mechanical, and management. Complete the form and we’ll get back to you after a quick screening task.</p>
-            <Accordion type="single" collapsible className="mt-4">
-              {faq.map((f, i) => (
-                <AccordionItem key={i} value={`item-${i}`}>
-                  <AccordionTrigger>{f.q}</AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground">{f.a}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-          <Card>
-            <CardHeader><CardTitle>Application Form</CardTitle></CardHeader>
-            <CardContent>
-              <form action="https://formspree.io/f/your-id" method="POST" className="grid gap-3">
-                <Input name="name" placeholder="Full name" required />
-                <Input name="email" type="email" placeholder="Email" required />
-                <Input name="roll" placeholder="BITS ID" />
-                <div className="grid grid-cols-3 gap-2 text-sm">
-                  <label className="col-span-3">Preferred vertical</label>
-                  <div className="col-span-3 flex flex-wrap gap-2">
-                    {[
-                      "Avionics – CV/Perception",
-                      "Avionics – Planning/Controls",
-                      "Mechanical – CAD/CFD",
-                      "Operations – Sponsorship/Web"
-                    ].map((opt) => (
-                      <label key={opt} className="inline-flex items-center gap-2 rounded-full border px-3 py-2">
-                        <input type="checkbox" name="vertical" value={opt} />
-                        <span>{opt}</span>
-                      </label>
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            {projects.map((p) => (
+              <Card key={p.title} className={cardClasses}>
+                <CardHeader>
+                  <CardTitle className={`font-serif text-lg ${textColor}`}>{p.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className={`text-sm ${mutedTextColor}`}>{p.blurb}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {p.tags.map((t) => (
+                      <Badge key={t} variant="outline" className="border-crimson-200 bg-crimson-50 text-crimson-700 font-normal">{t}</Badge>
                     ))}
                   </div>
-                </div>
-                <Textarea name="why" placeholder="Why Aeolus? Tell us in 3–5 lines." rows={4} />
-                <Button type="submit">Submit Application</Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-      </Section>
-
-      {/* Contact */}
-      <Section id="contact">
-        <div className="grid gap-8 md:grid-cols-2">
-          <div>
-            <h2 className="text-3xl font-bold">Contact</h2>
-            <p className="mt-4 text-muted-foreground">Have a collaboration in mind or want to host a workshop? Reach out.</p>
-            <div className="mt-6 grid gap-3 text-sm">
-              <div className="flex items-center gap-2"><Mail className="h-4 w-4" /> aeolus@hyderabad.bits-pilani.ac.in</div>
-              <div className="flex items-center gap-2"><Phone className="h-4 w-4" /> +91-90000-00000</div>
-              <div className="flex items-center gap-2"><MapPin className="h-4 w-4" /> F-Block, BITS Pilani Hyderabad Campus</div>
-              <div className="mt-2 flex gap-3">
-                <a className="inline-flex items-center gap-1 text-sm underline" href="#"><Instagram className="h-4 w-4" /> Instagram</a>
-                <a className="inline-flex items-center gap-1 text-sm underline" href="#"><Linkedin className="h-4 w-4" /> LinkedIn</a>
-                <a className="inline-flex items-center gap-1 text-sm underline" href="#"><Github className="h-4 w-4" /> GitHub</a>
-              </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </Section>
+        
+        {/* --- Join Us Section --- */}
+        <Section id="join">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+            <div>
+              <h2 className={`font-serif text-3xl font-bold ${textColor}`}>Join Our Squadron</h2>
+              <p className={`mt-4 text-base leading-relaxed ${mutedTextColor}`}>
+                We are looking for passionate individuals to join our team. Whether you're an aspiring engineer, a programmer, or a manager, there's a place for you at Aeolus.
+              </p>
+              <Accordion type="single" collapsible className="mt-6 w-full">
+                {faq.map((f, i) => (
+                  <AccordionItem key={i} value={`item-${i}`} className="border-b border-gray-200">
+                    <AccordionTrigger className={`font-medium text-left ${textColor} hover:no-underline`}>{f.q}</AccordionTrigger>
+                    <AccordionContent className={`text-sm ${mutedTextColor}`}>{f.a}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+            <Card className={cardClasses}>
+              <CardHeader>
+                <CardTitle className={`font-serif text-lg ${textColor}`}>Application Form</CardTitle>
+                <p className={`text-sm ${mutedTextColor}`}>Fill out the form to express your interest. We'll contact you with the next steps.</p>
+              </CardHeader>
+              <CardContent>
+                <form action="https://formspree.io/f/your-id" method="POST" className="grid gap-4">
+                  <Input name="name" placeholder="Full Name" required className="border-gray-300" />
+                  <Input name="email" type="email" placeholder="BITS Email" required className="border-gray-300" />
+                  <Input name="discipline" placeholder="Discipline (e.g., ECE, Mech)" className="border-gray-300" />
+                  <Textarea name="interest" placeholder="Briefly describe your interest in aerial robotics..." rows={4} className="border-gray-300" />
+                  <Button type="submit" className={`${primaryButtonClasses} w-full`}>Submit Application</Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        </Section>
+        
+        {/* --- Contact Section --- */}
+        <Section id="contact" hasSeparator={false} className="bg-gray-50">
+           <div className="text-center">
+            <h2 className={`font-serif text-3xl font-bold ${textColor}`}>Get in Touch</h2>
+            <p className={`mt-2 max-w-3xl mx-auto ${mutedTextColor}`}>
+              For sponsorships, collaborations, or any other inquiries, please reach out to us.
+            </p>
+          </div>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div className={`p-6 rounded-lg ${cardClasses}`}>
+              <Mail className={`mx-auto h-8 w-8 mb-2 ${textColor}`} />
+              <h3 className={`font-bold ${textColor}`}>Email Us</h3>
+              <a href="mailto:aeolus@hyderabad.bits-pilani.ac.in" className={`text-sm ${mutedTextColor} hover:text-crimson-600`}>aeolus@hyderabad.bits-pilani.ac.in</a>
+            </div>
+            <div className={`p-6 rounded-lg ${cardClasses}`}>
+              <Phone className={`mx-auto h-8 w-8 mb-2 ${textColor}`} />
+              <h3 className={`font-bold ${textColor}`}>Call Us</h3>
+              <p className={`text-sm ${mutedTextColor}`}>+91 90000 00000</p>
+            </div>
+            <div className={`p-6 rounded-lg ${cardClasses}`}>
+              <MapPin className={`mx-auto h-8 w-8 mb-2 ${textColor}`} />
+              <h3 className={`font-bold ${textColor}`}>Find Us</h3>
+              <p className={`text-sm ${mutedTextColor}`}>F-Block Workshop, BITS Pilani Hyderabad</p>
             </div>
           </div>
-          <Card>
-            <CardHeader><CardTitle>Send us a message</CardTitle></CardHeader>
-            <CardContent>
-              <form className="grid gap-3" action="mailto:aeolus@hyderabad.bits-pilani.ac.in" method="post">
-                <Input name="subject" placeholder="Subject" />
-                <Textarea name="message" placeholder="Your message" rows={5} />
-                <Button type="submit">Send Email</Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-      </Section>
+        </Section>
+      </main>
 
-      {/* Footer */}
-      <footer className="border-t">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 md:flex-row">
-          <div className="text-sm text-muted-foreground">© {year} Aeolus — BITS Pilani, Hyderabad Campus</div>
-          <div className="flex items-center gap-4 text-sm">
-            <a href="#about" className="hover:underline">About</a>
-            <a href="#sponsors" className="hover:underline">Sponsors</a>
-            <a href="#join" className="hover:underline">Join</a>
-            <a href="#contact" className="hover:underline">Contact</a>
+      {/* --- Footer --- */}
+      <footer className="border-t border-gray-200 bg-white">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-4 py-6 md:flex-row">
+          <div className="text-sm text-gray-500">
+            &copy; {year} Aeolus — BITS Pilani, Hyderabad Campus
+          </div>
+          <div className="flex items-center gap-6 text-sm">
+            <a href="#about" className="text-gray-600 hover:text-crimson-600">About</a>
+            <a href="#projects" className="text-gray-600 hover:text-crimson-600">Projects</a>
+            <a href="#join" className="text-gray-600 hover:text-crimson-600">Join</a>
           </div>
         </div>
       </footer>
