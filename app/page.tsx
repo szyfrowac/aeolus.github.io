@@ -13,19 +13,34 @@ import { Rocket, Drone, Cpu, Cog, Calendar, Users2, Star, Mail, MapPin, ChevronR
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
 
 // --- Helper components ---
-const Section = ({ id, children, className = "" }) => (
+
+// Define the types for the Section component's props
+interface SectionProps {
+  id: string;
+  children: React.ReactNode;
+  className?: string; // The '?' makes it optional
+}
+
+const Section = ({ id, children, className = "" }: SectionProps) => (
   <section id={id} className={`scroll-mt-24 py-16 md:py-24 ${className}`}>
     <div className="mx-auto w-full max-w-6xl px-4 md:px-6">{children}</div>
   </section>
 );
 
-const Pill = ({ children }) => (
+const Pill = ({ children }: { children: React.ReactNode }) => (
   <span className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium">
     {children}
   </span>
 );
 
-const Stat = ({ label, value, icon: Icon }) => (
+// Define types for the Stat component's props
+interface StatProps {
+  label: string;
+  value: string;
+  icon: React.ElementType; // This is the type for a component (like an icon)
+}
+
+const Stat = ({ label, value, icon: Icon }: StatProps) => (
   <div className="flex items-center gap-3">
     <div className="rounded-2xl border p-3"><Icon className="h-5 w-5" /></div>
     <div>
