@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { Plane, Users, Calendar, Award, Mail, MapPin, ChevronRight, Phone, Download } from "lucide-react";
+import { Plane, Users, Calendar, Award, Mail, MapPin, ChevronRight, Phone } from "lucide-react";
 
 // --- Main Section Component ---
 const Section = ({ id, children, className = "", hasSeparator = true }: { id: string, children: React.ReactNode, className?: string, hasSeparator?: boolean }) => (
@@ -183,7 +183,7 @@ export default function AeolusBPHC() {
             <div>
               <h2 className={`font-serif text-3xl font-bold ${textColor}`}>Join Our Squadron</h2>
               <p className={`mt-4 text-base leading-relaxed ${mutedTextColor}`}>
-                We are looking for passionate individuals to join our team. Whether you're an aspiring engineer, a programmer, or a manager, there's a place for you at Aeolus.
+                We are looking for passionate individuals to join our team. Whether you&apos;re an aspiring engineer, a programmer, or a manager, there&apos;s a place for you at Aeolus.
               </p>
               <Accordion type="single" collapsible className="mt-6 w-full">
                 {faq.map((f, i) => (
@@ -197,7 +197,7 @@ export default function AeolusBPHC() {
             <Card className={cardClasses}>
               <CardHeader>
                 <CardTitle className={`font-serif text-lg ${textColor}`}>Application Form</CardTitle>
-                <p className={`text-sm ${mutedTextColor}`}>Fill out the form to express your interest. We'll contact you with the next steps.</p>
+                <p className={`text-sm ${mutedTextColor}`}>Fill out the form to express your interest. We&apos;ll contact you with the next steps.</p>
               </CardHeader>
               <CardContent>
                 <form action="https://formspree.io/f/your-id" method="POST" className="grid gap-4">
@@ -256,4 +256,5 @@ export default function AeolusBPHC() {
     </div>
   );
 }
+
 
