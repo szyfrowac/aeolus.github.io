@@ -1,6 +1,10 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+// Note: You'll need to install these dependencies if you haven't already
+// npm install lucide-react framer-motion
+// Also, the following are likely custom components from ShadCN UI or similar.
+// This code assumes they are set up in your project.
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,14 +13,34 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Plane, Users, Calendar, Award, Mail, MapPin, ChevronRight, Phone } from "lucide-react";
 
-// --- Main Section Component ---
+// --- Animation Variants ---
+const sectionVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
+
+// --- Main Section Component (with animation) ---
 const Section = ({ id, children, className = "", hasSeparator = true }: { id: string, children: React.ReactNode, className?: string, hasSeparator?: boolean }) => (
-  <section id={id} className={`py-20 md:py-28 ${className}`}>
+  <motion.section
+    id={id}
+    className={`py-20 md:py-28 ${className}`}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.2 }}
+    variants={sectionVariants}
+  >
     <div className="mx-auto w-full max-w-5xl px-4 md:px-6">
       {children}
-      {hasSeparator && <hr className="mt-20 md:mt-28 border-gray-200" />}
+      {hasSeparator && <hr className="mt-20 md:mt-28 border-slate-700" />}
     </div>
-  </section>
+  </motion.section>
 );
 
 // --- Data ---
@@ -67,11 +91,15 @@ export default function AeolusBPHC() {
   const year = new Date().getFullYear();
 
   // --- Theme Style Constants ---
-  const textColor = "text-navy-900";
-  const mutedTextColor = "text-navy-700";
-  const primaryButtonClasses = "bg-crimson-600 text-white hover:bg-crimson-700 transition-colors shadow-sm";
-  const secondaryButtonClasses = "bg-white text-crimson-600 border border-crimson-200 hover:bg-crimson-50 transition-colors";
-  const cardClasses = "bg-white border border-gray-200 rounded-lg shadow-sm";
+  const textColor = "text-slate-100";
+  const mutedTextColor = "text-slate-400";
+  const accentColor = "text-cyan-400";
+  
+  const heroPrimaryButtonClasses = "bg-fuchsia-500 text-white hover:bg-fuchsia-600 focus:ring-fuchsia-400 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-fuchsia-500/30";
+  const heroSecondaryButtonClasses = "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-300 ease-in-out transform hover:scale-105";
+
+  const primaryButtonClasses = `bg-cyan-500 text-slate-900 font-semibold hover:bg-cyan-400 transition-colors shadow-md shadow-cyan-500/30`;
+  const cardClasses = "bg-slate-800/50 border border-slate-700 rounded-lg shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-cyan-400/50 hover:-translate-y-1";
 
   const navItems = [
     { id: "about", label: "About Us" },
@@ -82,27 +110,27 @@ export default function AeolusBPHC() {
 
   const Stat = ({ label, value, icon: Icon }: { label: string, value: string, icon: React.ElementType }) => (
     <div className="text-center">
-      <Icon className={`mx-auto h-10 w-10 mb-2 ${textColor}`} strokeWidth={1.5} />
-      <div className={`text-3xl font-bold font-serif ${textColor}`}>{value}</div>
+      <Icon className={`mx-auto h-10 w-10 mb-2 ${accentColor}`} strokeWidth={1.5} />
+      <div className={`text-3xl font-bold font-sans ${textColor}`}>{value}</div>
       <div className={`text-sm ${mutedTextColor}`}>{label}</div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-cream-50 font-sans text-navy-800 antialiased">
+    <div className="min-h-screen bg-slate-900 font-sans text-slate-300 antialiased">
       {/* --- Navigation --- */}
-      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-lg">
+      <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-900/60 backdrop-blur-lg">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
           <a href="#home" className="flex items-center gap-3">
-            <Plane className="h-7 w-7 text-crimson-600" />
+            <Plane className={`h-7 w-7 ${accentColor}`} />
             <div className="flex flex-col leading-tight">
               <span className={`font-bold text-lg ${textColor}`}>AEOLUS</span>
-              <span className="text-xs text-gray-500">Aerial Robotics Club, BITS Pilani</span>
+              <span className="text-xs text-slate-500">Aerial Robotics Club, BITS Pilani</span>
             </div>
           </a>
           <nav className="hidden items-center gap-6 md:flex">
             {navItems.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className={`text-sm font-medium ${mutedTextColor} hover:text-crimson-600 transition-colors`}>
+              <a key={n.id} href={`#${n.id}`} className={`text-sm font-medium ${mutedTextColor} hover:${accentColor} transition-colors`}>
                 {n.label}
               </a>
             ))}
@@ -112,19 +140,19 @@ export default function AeolusBPHC() {
 
       <main>
         {/* --- Hero Section --- */}
-        <section id="home" className="relative h-[80vh] min-h-[600px] bg-cover bg-center" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1433162653522-3827b686e098?q=80&w=2070&auto=format&fit=crop')` }}>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <section id="home" className="relative h-screen min-h-[700px] bg-cover bg-center bg-fixed" style={{ backgroundImage: `url('https://github.com/szyfrowac/aeolus.github.io/blob/main/public/D72_2524.jpg?raw=true')` }}>
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/20 to-slate-900" />
           <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-              <h1 className="font-serif text-5xl font-bold leading-tight md:text-7xl">
-                Design. Build. Fly.
+              <h1 className="font-sans text-5xl font-bold leading-tight md:text-7xl tracking-tight text-shadow">
+                Build. Fly. Crash.
               </h1>
-              <p className="mt-4 max-w-2xl text-lg text-gray-200">
+              <p className="mt-4 max-w-2xl text-lg text-slate-200 text-shadow-sm">
                 Aeolus is the premier aerial robotics club of BITS Pilani, Hyderabad, dedicated to excellence in unmanned aerial vehicle technology and innovation.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <a href="#join"><Button size="lg" className={primaryButtonClasses}>Become a Member <ChevronRight className="ml-1 h-4 w-4" /></Button></a>
-                <a href="#projects"><Button size="lg" className={secondaryButtonClasses}>See Our Work</Button></a>
+                <a href="#join"><Button size="lg" className={heroPrimaryButtonClasses}>Become a Member <ChevronRight className="ml-1 h-4 w-4" /></Button></a>
+                <a href="#projects"><Button size="lg" className={heroSecondaryButtonClasses}>See Our Work</Button></a>
               </div>
             </motion.div>
           </div>
@@ -134,7 +162,7 @@ export default function AeolusBPHC() {
         <Section id="about">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className={`font-serif text-3xl font-bold ${textColor}`}>Welcome to Aeolus</h2>
+              <h2 className={`font-sans text-3xl font-bold ${textColor}`}>Welcome to <span className={accentColor}>Aeolus</span></h2>
               <p className={`mt-4 text-base leading-relaxed ${mutedTextColor}`}>
                 Founded in 2019, Aeolus is a multidisciplinary student club focused on the research, design, and fabrication of unmanned aerial vehicles (UAVs). Our mission is to provide a platform for students to gain hands-on experience in aerospace engineering and robotics, fostering skills that bridge the gap between academic theory and real-world application.
                 <br/><br/>
@@ -153,7 +181,7 @@ export default function AeolusBPHC() {
         {/* --- Projects Section --- */}
         <Section id="projects">
           <div className="text-center">
-            <h2 className={`font-serif text-3xl font-bold ${textColor}`}>Our Fleet of Projects</h2>
+            <h2 className={`font-sans text-3xl font-bold ${textColor}`}>Our Fleet of Projects</h2>
             <p className={`mt-2 max-w-3xl mx-auto ${mutedTextColor}`}>
               Our members collaborate on a diverse range of projects, from competitive aircraft to cutting-edge research in autonomous systems.
             </p>
@@ -162,13 +190,13 @@ export default function AeolusBPHC() {
             {projects.map((p) => (
               <Card key={p.title} className={cardClasses}>
                 <CardHeader>
-                  <CardTitle className={`font-serif text-lg ${textColor}`}>{p.title}</CardTitle>
+                  <CardTitle className={`font-sans text-lg ${textColor}`}>{p.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className={`text-sm ${mutedTextColor}`}>{p.blurb}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {p.tags.map((t) => (
-                      <Badge key={t} variant="outline" className="border-crimson-200 bg-crimson-50 text-crimson-700 font-normal">{t}</Badge>
+                      <Badge key={t} variant="outline" className="border-cyan-400/30 bg-cyan-900/30 text-cyan-300 font-normal">{t}</Badge>
                     ))}
                   </div>
                 </CardContent>
@@ -181,14 +209,14 @@ export default function AeolusBPHC() {
         <Section id="join">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
             <div>
-              <h2 className={`font-serif text-3xl font-bold ${textColor}`}>Join Our Squadron</h2>
+              <h2 className={`font-sans text-3xl font-bold ${textColor}`}>Join Our Squadron</h2>
               <p className={`mt-4 text-base leading-relaxed ${mutedTextColor}`}>
                 We are looking for passionate individuals to join our team. Whether you&apos;re an aspiring engineer, a programmer, or a manager, there&apos;s a place for you at Aeolus.
               </p>
               <Accordion type="single" collapsible className="mt-6 w-full">
                 {faq.map((f, i) => (
-                  <AccordionItem key={i} value={`item-${i}`} className="border-b border-gray-200">
-                    <AccordionTrigger className={`font-medium text-left ${textColor} hover:no-underline`}>{f.q}</AccordionTrigger>
+                  <AccordionItem key={i} value={`item-${i}`} className="border-b border-slate-700">
+                    <AccordionTrigger className={`font-medium text-left ${textColor} hover:no-underline hover:${accentColor}`}>{f.q}</AccordionTrigger>
                     <AccordionContent className={`text-sm ${mutedTextColor}`}>{f.a}</AccordionContent>
                   </AccordionItem>
                 ))}
@@ -196,15 +224,15 @@ export default function AeolusBPHC() {
             </div>
             <Card className={cardClasses}>
               <CardHeader>
-                <CardTitle className={`font-serif text-lg ${textColor}`}>Application Form</CardTitle>
+                <CardTitle className={`font-sans text-lg ${textColor}`}>Application Form</CardTitle>
                 <p className={`text-sm ${mutedTextColor}`}>Fill out the form to express your interest. We&apos;ll contact you with the next steps.</p>
               </CardHeader>
               <CardContent>
-                <form action="https://formspree.io/f/your-id" method="POST" className="grid gap-4">
-                  <Input name="name" placeholder="Full Name" required className="border-gray-300" />
-                  <Input name="email" type="email" placeholder="BITS Email" required className="border-gray-300" />
-                  <Input name="discipline" placeholder="Discipline (e.g., ECE, Mech)" className="border-gray-300" />
-                  <Textarea name="interest" placeholder="Briefly describe your interest in aerial robotics..." rows={4} className="border-gray-300" />
+                <form action="#" method="POST" className="grid gap-4">
+                  <Input name="name" placeholder="Full Name" required className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:ring-cyan-500 focus:border-cyan-500" />
+                  <Input name="email" type="email" placeholder="BITS Email" required className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:ring-cyan-500 focus:border-cyan-500" />
+                  <Input name="discipline" placeholder="Discipline (e.g., ECE, Mech)" className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:ring-cyan-500 focus:border-cyan-500" />
+                  <Textarea name="interest" placeholder="Briefly describe your interest..." rows={4} className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:ring-cyan-500 focus:border-cyan-500" />
                   <Button type="submit" className={`${primaryButtonClasses} w-full`}>Submit Application</Button>
                 </form>
               </CardContent>
@@ -213,26 +241,26 @@ export default function AeolusBPHC() {
         </Section>
         
         {/* --- Contact Section --- */}
-        <Section id="contact" hasSeparator={false} className="bg-gray-50">
+        <Section id="contact" hasSeparator={false} className="bg-slate-900">
            <div className="text-center">
-            <h2 className={`font-serif text-3xl font-bold ${textColor}`}>Get in Touch</h2>
+            <h2 className={`font-sans text-3xl font-bold ${textColor}`}>Get in Touch</h2>
             <p className={`mt-2 max-w-3xl mx-auto ${mutedTextColor}`}>
               For sponsorships, collaborations, or any other inquiries, please reach out to us.
             </p>
           </div>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className={`p-6 rounded-lg ${cardClasses}`}>
-              <Mail className={`mx-auto h-8 w-8 mb-2 ${textColor}`} />
+              <Mail className={`mx-auto h-8 w-8 mb-2 ${accentColor}`} />
               <h3 className={`font-bold ${textColor}`}>Email Us</h3>
-              <a href="mailto:aeolus@hyderabad.bits-pilani.ac.in" className={`text-sm ${mutedTextColor} hover:text-crimson-600`}>aeolus@hyderabad.bits-pilani.ac.in</a>
+              <a href="mailto:aeolus@hyderabad.bits-pilani.ac.in" className={`text-sm ${mutedTextColor} hover:${accentColor}`}>aeolus@hyderabad.bits-pilani.ac.in</a>
             </div>
             <div className={`p-6 rounded-lg ${cardClasses}`}>
-              <Phone className={`mx-auto h-8 w-8 mb-2 ${textColor}`} />
+              <Phone className={`mx-auto h-8 w-8 mb-2 ${accentColor}`} />
               <h3 className={`font-bold ${textColor}`}>Call Us</h3>
               <p className={`text-sm ${mutedTextColor}`}>+91 90000 00000</p>
             </div>
             <div className={`p-6 rounded-lg ${cardClasses}`}>
-              <MapPin className={`mx-auto h-8 w-8 mb-2 ${textColor}`} />
+              <MapPin className={`mx-auto h-8 w-8 mb-2 ${accentColor}`} />
               <h3 className={`font-bold ${textColor}`}>Find Us</h3>
               <p className={`text-sm ${mutedTextColor}`}>F-Block Workshop, BITS Pilani Hyderabad</p>
             </div>
@@ -241,15 +269,15 @@ export default function AeolusBPHC() {
       </main>
 
       {/* --- Footer --- */}
-      <footer className="border-t border-gray-200 bg-white">
+      <footer className="border-t border-slate-800 bg-slate-900">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-4 py-6 md:flex-row">
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-slate-500">
             &copy; {year} Aeolus — BITS Pilani, Hyderabad Campus
           </div>
           <div className="flex items-center gap-6 text-sm">
-            <a href="#about" className="text-gray-600 hover:text-crimson-600">About</a>
-            <a href="#projects" className="text-gray-600 hover:text-crimson-600">Projects</a>
-            <a href="#join" className="text-gray-600 hover:text-crimson-600">Join</a>
+            <a href="#about" className={`text-slate-400 hover:${accentColor}`}>About</a>
+            <a href="#projects" className={`text-slate-400 hover:${accentColor}`}>Projects</a>
+            <a href="#join" className={`text-slate-400 hover:${accentColor}`}>Join</a>
           </div>
         </div>
       </footer>
