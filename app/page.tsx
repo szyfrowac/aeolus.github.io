@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { motion, Variants } from "framer-motion"
+import { motion } from "framer-motion";
 // Note: You'll need to install these dependencies if you haven't already
 // npm install lucide-react framer-motion
 // Also, the following are likely custom components from ShadCN UI or similar.
@@ -13,18 +13,30 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Plane, Users, Calendar, Award, Mail, MapPin, ChevronRight, Phone } from "lucide-react";
 
+// --- Google Font Import ---
+const Fonts = () => (
+  <style jsx global>{`
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+    
+    .font-display {
+      font-family: 'Orbitron', sans-serif;
+    }
+    
+    .font-body {
+      font-family: 'Exo 2', sans-serif;
+    }
+  `}</style>
+);
+
 // --- Animation Variants ---
-const sectionVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 50,
-  },
+const sectionVariants = {
+  hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
-      ease: "easeInOut",
+      duration: 0.6,
+      ease: "easeOut",
     },
   },
 };
@@ -102,7 +114,8 @@ export default function AeolusBPHC() {
   const heroSecondaryButtonClasses = "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-300 ease-in-out transform hover:scale-105";
 
   const primaryButtonClasses = `bg-cyan-500 text-slate-900 font-semibold hover:bg-cyan-400 transition-colors shadow-md shadow-cyan-500/30`;
-  const cardClasses = "bg-slate-800/50 border border-slate-700 rounded-lg shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-cyan-400/50 hover:-translate-y-1";
+  const projectCardClasses = "bg-slate-800/50 border border-slate-700 rounded-lg shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-cyan-400/50 hover:-translate-y-1 relative overflow-hidden after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-[2px] after:bg-cyan-400 after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100";
+  const formCardClasses = "bg-slate-800/50 border border-slate-700 rounded-lg shadow-lg backdrop-blur-sm transition-all duration-300 relative ring-1 ring-transparent hover:ring-cyan-500/50";
 
   const navItems = [
     { id: "about", label: "About Us" },
@@ -114,20 +127,21 @@ export default function AeolusBPHC() {
   const Stat = ({ label, value, icon: Icon }: { label: string, value: string, icon: React.ElementType }) => (
     <div className="text-center">
       <Icon className={`mx-auto h-10 w-10 mb-2 ${accentColor}`} strokeWidth={1.5} />
-      <div className={`text-3xl font-bold font-sans ${textColor}`}>{value}</div>
-      <div className={`text-sm ${mutedTextColor}`}>{label}</div>
+      <div className={`text-3xl font-bold font-display ${textColor}`}>{value}</div>
+      <div className={`text-sm ${mutedTextColor} font-body`}>{label}</div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-slate-900 font-sans text-slate-300 antialiased">
+    <div className="min-h-screen bg-slate-900 font-body text-slate-300 antialiased">
+      <Fonts />
       {/* --- Navigation --- */}
       <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-900/60 backdrop-blur-lg">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
           <a href="#home" className="flex items-center gap-3">
             <Plane className={`h-7 w-7 ${accentColor}`} />
             <div className="flex flex-col leading-tight">
-              <span className={`font-bold text-lg ${textColor}`}>AEOLUS</span>
+              <span className={`font-bold text-lg ${textColor} font-display`}>AEOLUS</span>
               <span className="text-xs text-slate-500">Aerial Robotics Club, BITS Pilani</span>
             </div>
           </a>
@@ -147,7 +161,7 @@ export default function AeolusBPHC() {
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/20 to-slate-900" />
           <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-              <h1 className="font-sans text-5xl font-bold leading-tight md:text-7xl tracking-tight text-shadow">
+              <h1 className="font-display text-5xl font-bold leading-tight md:text-7xl tracking-tight text-shadow">
                 Build. Fly. Crash.
               </h1>
               <p className="mt-4 max-w-2xl text-lg text-slate-200 text-shadow-sm">
@@ -163,20 +177,32 @@ export default function AeolusBPHC() {
 
         {/* --- About Section --- */}
         <Section id="about">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className={`font-sans text-3xl font-bold ${textColor}`}>Welcome to <span className={accentColor}>Aeolus</span></h2>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
+            <motion.div
+              className="md:col-span-2"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7 }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Team working on robotics"
+                className="rounded-lg shadow-2xl w-full h-auto object-cover aspect-square"
+                onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x600/0f172a/38bdf8?text=Our+Workshop'; }}
+              />
+            </motion.div>
+            <div className="md:col-span-3">
+              <h2 className={`font-display text-3xl font-bold ${textColor}`}>Welcome to <span className={accentColor}>Aeolus</span></h2>
               <p className={`mt-4 text-base leading-relaxed ${mutedTextColor}`}>
                 Founded in 2019, Aeolus is a multidisciplinary student club focused on the research, design, and fabrication of unmanned aerial vehicles (UAVs). Our mission is to provide a platform for students to gain hands-on experience in aerospace engineering and robotics, fostering skills that bridge the gap between academic theory and real-world application.
-                <br/><br/>
-                We participate in prestigious national and international competitions, pushing the boundaries of what student-led teams can achieve in aerial robotics.
               </p>
-            </div>
-            <div className="grid grid-cols-2 gap-8">
-              <Stat label="Active Members" value="90+" icon={Users} />
-              <Stat label="Founded" value="2019" icon={Calendar} />
-              <Stat label="Competitions" value="4" icon={Award} />
-              <Stat label="Projects" value="10+" icon={Plane} />
+              <div className="mt-8 grid grid-cols-2 gap-8">
+                <Stat label="Active Members" value="90+" icon={Users} />
+                <Stat label="Founded" value="2019" icon={Calendar} />
+                <Stat label="Competitions" value="4" icon={Award} />
+                <Stat label="Projects" value="10+" icon={Plane} />
+              </div>
             </div>
           </div>
         </Section>
@@ -184,16 +210,16 @@ export default function AeolusBPHC() {
         {/* --- Projects Section --- */}
         <Section id="projects">
           <div className="text-center">
-            <h2 className={`font-sans text-3xl font-bold ${textColor}`}>Our Fleet of Projects</h2>
+            <h2 className={`font-display text-3xl font-bold ${textColor}`}>Our Fleet of Projects</h2>
             <p className={`mt-2 max-w-3xl mx-auto ${mutedTextColor}`}>
               Our members collaborate on a diverse range of projects, from competitive aircraft to cutting-edge research in autonomous systems.
             </p>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {projects.map((p) => (
-              <Card key={p.title} className={cardClasses}>
+              <Card key={p.title} className={projectCardClasses}>
                 <CardHeader>
-                  <CardTitle className={`font-sans text-lg ${textColor}`}>{p.title}</CardTitle>
+                  <CardTitle className={`font-display text-lg ${textColor}`}>{p.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className={`text-sm ${mutedTextColor}`}>{p.blurb}</p>
@@ -212,7 +238,7 @@ export default function AeolusBPHC() {
         <Section id="join">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
             <div>
-              <h2 className={`font-sans text-3xl font-bold ${textColor}`}>Join Our Squadron</h2>
+              <h2 className={`font-display text-3xl font-bold ${textColor}`}>Join Our Squadron</h2>
               <p className={`mt-4 text-base leading-relaxed ${mutedTextColor}`}>
                 We are looking for passionate individuals to join our team. Whether you&apos;re an aspiring engineer, a programmer, or a manager, there&apos;s a place for you at Aeolus.
               </p>
@@ -225,9 +251,9 @@ export default function AeolusBPHC() {
                 ))}
               </Accordion>
             </div>
-            <Card className={cardClasses}>
+            <Card className={formCardClasses}>
               <CardHeader>
-                <CardTitle className={`font-sans text-lg ${textColor}`}>Application Form</CardTitle>
+                <CardTitle className={`font-display text-lg ${textColor}`}>Application Form</CardTitle>
                 <p className={`text-sm ${mutedTextColor}`}>Fill out the form to express your interest. We&apos;ll contact you with the next steps.</p>
               </CardHeader>
               <CardContent>
@@ -245,27 +271,28 @@ export default function AeolusBPHC() {
         
         {/* --- Contact Section --- */}
         <Section id="contact" hasSeparator={false} className="bg-slate-900">
-           <div className="text-center">
-            <h2 className={`font-sans text-3xl font-bold ${textColor}`}>Get in Touch</h2>
+           <div className="relative text-center">
+            <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl -z-10"></div>
+            <h2 className={`font-display text-3xl font-bold ${textColor}`}>Get in Touch</h2>
             <p className={`mt-2 max-w-3xl mx-auto ${mutedTextColor}`}>
               For sponsorships, collaborations, or any other inquiries, please reach out to us.
             </p>
           </div>
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className={`p-6 rounded-lg ${cardClasses}`}>
-              <Mail className={`mx-auto h-8 w-8 mb-2 ${accentColor}`} />
-              <h3 className={`font-bold ${textColor}`}>Email Us</h3>
-              <a href="mailto:aeolus@hyderabad.bits-pilani.ac.in" className={`text-sm ${mutedTextColor} hover:${accentColor}`}>aeolus@hyderabad.bits-pilani.ac.in</a>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className={`group text-center p-6 rounded-lg ${projectCardClasses}`}>
+              <Mail className={`mx-auto h-8 w-8 mb-4 ${accentColor} transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]`} />
+              <h3 className={`font-bold ${textColor} mb-1 transition-colors duration-300 group-hover:text-white`}>Email Us</h3>
+              <a href="mailto:aeolus@hyderabad.bits-pilani.ac.in" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors duration-300 group-hover:text-cyan-300`}>aeolus@hyderabad.bits-pilani.ac.in</a>
             </div>
-            <div className={`p-6 rounded-lg ${cardClasses}`}>
-              <Phone className={`mx-auto h-8 w-8 mb-2 ${accentColor}`} />
-              <h3 className={`font-bold ${textColor}`}>Call Us</h3>
-              <p className={`text-sm ${mutedTextColor}`}>+91 90000 00000</p>
+            <div className={`group text-center p-6 rounded-lg ${projectCardClasses}`}>
+              <Phone className={`mx-auto h-8 w-8 mb-4 ${accentColor} transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]`} />
+              <h3 className={`font-bold ${textColor} mb-1 transition-colors duration-300 group-hover:text-white`}>Call Us</h3>
+              <p className={`text-sm ${mutedTextColor} transition-colors duration-300 group-hover:text-slate-300`}>+91 90000 00000</p>
             </div>
-            <div className={`p-6 rounded-lg ${cardClasses}`}>
-              <MapPin className={`mx-auto h-8 w-8 mb-2 ${accentColor}`} />
-              <h3 className={`font-bold ${textColor}`}>Find Us</h3>
-              <p className={`text-sm ${mutedTextColor}`}>F-Block Workshop, BITS Pilani Hyderabad</p>
+            <div className={`group text-center p-6 rounded-lg ${projectCardClasses}`}>
+              <MapPin className={`mx-auto h-8 w-8 mb-4 ${accentColor} transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]`} />
+              <h3 className={`font-bold ${textColor} mb-1 transition-colors duration-300 group-hover:text-white`}>Find Us</h3>
+              <p className={`text-sm ${mutedTextColor} transition-colors duration-300 group-hover:text-slate-300`}>F-Block Workshop, BITS Pilani Hyderabad</p>
             </div>
           </div>
         </Section>
