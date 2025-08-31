@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { Plane, Users, Calendar, Award, Mail, MapPin, ChevronRight, Phone } from "lucide-react";
+import { Plane, Users, Calendar, Award, Mail, MapPin, ChevronRight, Phone, Instagram, Linkedin } from "lucide-react";
 
 // --- Google Font Import ---
 const Fonts = () => (
@@ -101,6 +101,25 @@ const faq = [
   },
 ];
 
+// Add a new data array for blog posts. You can add more as needed.
+const blogPosts = [
+  {
+    title: "The Quiet Revolution",
+    blurb: "How enterprises are silently transforming their digital infrastructure.",
+    image: "/aeoluscover.png",
+  },
+  {
+    title: "Engineering the Future of Flight",
+    blurb: "Our journey in designing and building autonomous aerial systems.",
+    image: "/aeoluscover.png",
+  },
+  {
+    title: "A Glimpse into our Workshop",
+    blurb: "Behind the scenes of our latest project, from concept to flight.",
+    image: "/aeoluscover.png",
+  },
+];
+
 // --- Main Component ---
 export default function AeolusBPHC() {
   const year = new Date().getFullYear();
@@ -120,6 +139,7 @@ export default function AeolusBPHC() {
   const navItems = [
     { id: "about", label: "About Us" },
     { id: "projects", label: "Projects" },
+    { id: "blogs", label: "Blogs" },
     { id: "join", label: "Join Us" },
     { id: "contact", label: "Contact" },
   ];
@@ -139,10 +159,13 @@ export default function AeolusBPHC() {
       <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-900/60 backdrop-blur-lg">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
           <a href="#home" className="flex items-center gap-3">
-            <Plane className={`h-7 w-7 ${accentColor}`} />
+            <img
+             src="/AeolsuLogo-removebg-preview.png" // Assuming logo.png is in your public folder
+             alt="AEOLUS logo"
+             className={`h-15 w-30 ${accentColor} object-contain`} // Use the same size and color classes
+            />
             <div className="flex flex-col leading-tight">
-              <span className={`font-bold text-lg ${textColor} font-display`}>AEOLUS</span>
-              <span className="text-xs text-slate-500">Aerial Robotics Club, BITS Pilani</span>
+              <span className={`font-bold text-lg ${textColor} font-display`}>Aerial Robotics Club, BITS Pilani</span>
             </div>
           </a>
           <nav className="hidden items-center gap-6 md:flex">
@@ -157,12 +180,14 @@ export default function AeolusBPHC() {
 
       <main>
         {/* --- Hero Section --- */}
-        <section id="home" className="relative h-screen min-h-[700px] bg-cover bg-center bg-fixed" style={{ backgroundImage: `url('https://github.com/szyfrowac/aeolus.github.io/blob/main/public/D72_2524.jpg?raw=true')` }}>
+        <section id="home" className="relative h-screen min-h-[700px] bg-cover bg-center bg-fixed" style={{ backgroundImage: `url('/aeoluscover.png')` }}>
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/20 to-slate-900" />
           <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
               <h1 className="font-display text-5xl font-bold leading-tight md:text-7xl tracking-tight text-shadow">
-                Build. Fly. Crash.
+                <span className={accentColor}>
+                  Build. Fly. Crash.
+                </span>
               </h1>
               <p className="mt-4 max-w-2xl text-lg text-slate-200 text-shadow-sm">
                 Aeolus is the premier aerial robotics club of BITS Pilani, Hyderabad, dedicated to excellence in unmanned aerial vehicle technology and innovation.
@@ -233,6 +258,40 @@ export default function AeolusBPHC() {
             ))}
           </div>
         </Section>
+
+        {/* --- Blogs Section --- */}
+        <Section id="blogs">
+          <div className="text-center">
+            <h2 className={`font-display text-3xl font-bold ${textColor}`}>From Our Blog</h2>
+            <p className={`mt-2 max-w-3xl mx-auto ${mutedTextColor}`}>
+              Dive deep into our technical insights, project spotlights, and team stories.
+            </p>
+          </div>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {blogPosts.map((post) => (
+              <Card key={post.title} className={projectCardClasses}>
+                <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
+                  <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+                </div>
+                <CardHeader>
+                    <CardTitle className={`font-display text-lg ${textColor}`}>
+                      {post.title}
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                   <p className={`text-sm ${mutedTextColor}`}>
+                    {post.blurb}
+                   </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <div className="mt-12 flex justify-center">
+            <a href="/blogs">
+              <Button className={primaryButtonClasses}>See All Blogs</Button>
+            </a>
+          </div>
+        </Section>
         
         {/* --- Join Us Section --- */}
         <Section id="join">
@@ -287,7 +346,7 @@ export default function AeolusBPHC() {
             <div className={`group text-center p-6 rounded-lg ${projectCardClasses}`}>
               <Phone className={`mx-auto h-8 w-8 mb-4 ${accentColor} transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]`} />
               <h3 className={`font-bold ${textColor} mb-1 transition-colors duration-300 group-hover:text-white`}>Call Us</h3>
-              <p className={`text-sm ${mutedTextColor} transition-colors duration-300 group-hover:text-slate-300`}>+91 90000 00000</p>
+              <p className={`text-sm ${mutedTextColor} transition-colors duration-300 group-hover:text-slate-300`}>+91 98XXX XXXXX</p>
             </div>
             <div className={`group text-center p-6 rounded-lg ${projectCardClasses}`}>
               <MapPin className={`mx-auto h-8 w-8 mb-4 ${accentColor} transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]`} />
@@ -299,18 +358,87 @@ export default function AeolusBPHC() {
       </main>
 
       {/* --- Footer --- */}
-      <footer className="border-t border-slate-800 bg-slate-900">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-4 py-6 md:flex-row">
-          <div className="text-sm text-slate-500">
-            &copy; {year} Aeolus — BITS Pilani, Hyderabad Campus
-          </div>
-          <div className="flex items-center gap-6 text-sm">
-            <a href="#about" className={`text-slate-400 hover:${accentColor}`}>About</a>
-            <a href="#projects" className={`text-slate-400 hover:${accentColor}`}>Projects</a>
-            <a href="#join" className={`text-slate-400 hover:${accentColor}`}>Join</a>
-          </div>
+      {/* --- Footer --- */}
+<footer className="bg-slate-900 border-t border-slate-800 pt-16 pb-8">
+  <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-8">
+      {/* Club Info & Socials */}
+      <div className="md:col-span-1">
+        <a href="#home" className="flex items-center gap-2">
+          <img
+            src="/AeolsuLogo-removebg-preview.png" // Your logo path
+            alt="AEOLUS logo"
+            className={`h-10 w-auto object-contain`} // Adjusted size for footer logo
+          />
+          {/* You might want to remove "Aerial Robotics Club, BITS Pilani" here if the logo itself implies it, or keep it concise */}
+          {/* <span className={`font-bold text-xl ${textColor} font-display`}>AEOLUS</span> */}
+        </a>
+        <p className={`mt-4 text-sm ${mutedTextColor} max-w-xs`}>
+          The premier aerial robotics club of BITS Pilani, Hyderabad Campus. Dedicated to innovation and excellence in UAV technology.
+        </p>
+        <div className="mt-6 flex gap-4">
+          {/* Social Media Icons */}
+          <a href="#" className={`text-slate-500 hover:${accentColor} transition-colors`}>
+            <Instagram className="h-6 w-6" />
+          </a>
+          <a href="#" className={`text-slate-500 hover:${accentColor} transition-colors`}>
+            <Linkedin className="h-6 w-6" />
+          </a>
+          {/* Add more social icons as needed */}
         </div>
-      </footer>
+      </div>
+
+      {/* Navigation Columns */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:col-span-3 gap-8">
+        {/* Column 1: Club (formerly Product) */}
+        <div>
+          <h3 className={`text-sm font-semibold ${textColor} mb-4`}>Club</h3>
+          <ul className="space-y-3">
+            <li><a href="#about" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>About Us</a></li>
+            <li><a href="#projects" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Projects</a></li>
+            <li><a href="#join" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Join Us</a></li>
+            <li><a href="#blogs" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Blogs</a></li>
+          </ul>
+        </div>
+
+        {/* Column 2: About (formerly Company) */}
+        <div>
+          <h3 className={`text-sm font-semibold ${textColor} mb-4`}>About</h3>
+          <ul className="space-y-3">
+            <li><a href="#team" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Our Team</a></li> {/* You might need to add a #team section */}
+            <li><a href="#mission" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Our Mission</a></li> {/* You might need to add a #mission section */}
+            <li><a href="/alumni" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Alumni</a></li> {/* Link to a new alumni page */}
+            <li><a href="/careers" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Careers</a></li> {/* If you have opportunities */}
+          </ul>
+        </div>
+
+        {/* Column 3: Resources */}
+        <div>
+          <h3 className={`text-sm font-semibold ${textColor} mb-4`}>Resources</h3>
+          <ul className="space-y-3">
+            <li><a href="/documentation" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Documentation</a></li>
+            <li><a href="#contact" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Support</a></li>
+            <li><a href="/privacy" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Privacy Policy</a></li>
+            <li><a href="/terms" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {/* Bottom Copyright and Policy Links */}
+    <div className="mt-16 flex flex-col md:flex-row items-center justify-between border-t border-slate-800 pt-8">
+      <div className="text-sm text-slate-500 order-2 md:order-1 mt-4 md:mt-0">
+        &copy; {year} Aeolus — BITS Pilani, Hyderabad Campus. All rights reserved.
+      </div>
+      <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm order-1 md:order-2">
+        <a href="/refund" className={`text-slate-400 hover:${accentColor}`}>Refund Policy</a> {/* Adjust if not applicable */}
+        <a href="/privacy" className={`text-slate-400 hover:${accentColor}`}>Privacy Policy</a>
+        <a href="/terms" className={`text-slate-400 hover:${accentColor}`}>Terms of Service</a>
+        <a href="/cookie" className={`text-slate-400 hover:${accentColor}`}>Cookie Policy</a> {/* Adjust if not applicable */}
+      </div>
+    </div>
+  </div>
+</footer>
     </div>
   );
 }
