@@ -78,7 +78,7 @@ const teamMembers = [
     dept: "Mechanical",
     image: "/aditya.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "https://www.linkedin.com/in/aditya-sinha/" }
+    socials: { github: "#", linkedin: "https://www.linkedin.com/in/aditya-sinha-2a861930b/" }
   },
   {
     id: "6",
@@ -87,7 +87,7 @@ const teamMembers = [
     dept: "Mechanical",
     image: "/pranavi.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "https://www.linkedin.com/in/pranavi-shrimali/" }
+    socials: { github: "#", linkedin: "https://www.linkedin.com/in/pranavi-shrimali-5b0b81349/" }
   },
   {
     id: "7",
