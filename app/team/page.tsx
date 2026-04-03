@@ -8,8 +8,8 @@ import Image from 'next/image';
 import {
   ArrowLeft,
   Mail,
-  Linkedin,
-  Github,
+  Linkedin as LinkedinIcon, // Alias the icon
+  Github as GithubIcon,     // Alias the icon
   Plus,
   Menu,
   X,
@@ -60,7 +60,7 @@ const teamMembers = [
     dept: "Nucleus",
     image: "/ishaan.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    socials: { github: "#", linkedin: "https://www.linkedin.com/in/valluru-ishaan-87b920392/" }
   },
   {
     id: "4",
@@ -78,7 +78,7 @@ const teamMembers = [
     dept: "Mechanical",
     image: "/aditya.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    socials: { github: "#", linkedin: "https://www.linkedin.com/in/aditya-sinha/" }
   },
   {
     id: "6",
@@ -87,7 +87,7 @@ const teamMembers = [
     dept: "Mechanical",
     image: "/pranavi.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    socials: { github: "#", linkedin: "https://www.linkedin.com/in/pranavi-shrimali/" }
   },
   {
     id: "7",
@@ -96,7 +96,7 @@ const teamMembers = [
     dept: "Avionics",
     image: "/pavan.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    socials: { github: "#", linkedin: "https://www.linkedin.com/in/pavan-agrawal-833567311/" }
   },
   {
     id: "8",
@@ -105,7 +105,7 @@ const teamMembers = [
     dept: "Mechanical",
     image: "/srijan.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    socials: { github: "#", linkedin: "https://www.linkedin.com/in/srijan-nadimpalli-1734203ab/" }
   },
   {
     id: "9",
@@ -289,9 +289,26 @@ export default function TeamPage() {
                   <CardContent>
                     <p className={`text-sm ${mutedTextColor} mb-6`}>{member.bio}</p>
                     <div className="flex gap-4 border-t border-slate-700 pt-4">
-                      {member.socials.linkedin && <Linkedin className="h-5 w-5 cursor-pointer hover:text-cyan-400" />}
-                      {member.socials.github && <Github className="h-5 w-5 cursor-pointer hover:text-cyan-400" />}
-                      {member.socials.email && <Mail className="h-5 w-5 cursor-pointer hover:text-cyan-400" />}
+                      {/* LinkedIn Link */}
+                      {member.socials.linkedin && member.socials.linkedin !== "#" && (
+                        <a href={member.socials.linkedin} target="_blank" rel="noopener noreferrer">
+                          <LinkedinIcon className="h-5 w-5 cursor-pointer hover:text-cyan-400 transition-colors" />
+                        </a>
+                      )}
+
+                      {/* GitHub Link */}
+                      {member.socials.github && member.socials.github !== "#" && (
+                        <a href={member.socials.github} target="_blank" rel="noopener noreferrer">
+                          <GithubIcon className="h-5 w-5 cursor-pointer hover:text-cyan-400 transition-colors" />
+                        </a>
+                      )}
+
+                      {/* Email Link */}
+                      {member.socials.email && (
+                        <a href={`mailto:${member.socials.email}`}>
+                          <Mail className="h-5 w-5 cursor-pointer hover:text-cyan-400 transition-colors" />
+                        </a>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
