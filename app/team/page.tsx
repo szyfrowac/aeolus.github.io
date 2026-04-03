@@ -40,7 +40,7 @@ const teamMembers = [
     name: "Bala Phanikar Challa",
     role: "President",
     dept: "Nucleus",
-    image: "/bala.png", // Replace with actual paths in /public/team/
+    image: "/bala_phanikar_challa.png", // Replace with actual paths in /public/team/
     bio: "Leading the next generation of aerial innovators at BITS Hyderabad.",
     socials: { linkedin: "https://www.linkedin.com/in/bala-phanikar-challa/", github: "#", email: "f20230424@hyderabad.bits-pilani.ac.in" }
   },
@@ -76,7 +76,7 @@ const teamMembers = [
     name: "Aditya Sinha",
     role: "",
     dept: "Mechanical",
-    image: "/aditya.png",
+    image: "/aditya_sinha.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
     socials: { github: "#", linkedin: "https://www.linkedin.com/in/aditya-sinha-2a861930b/" }
   },
@@ -85,7 +85,7 @@ const teamMembers = [
     name: "Pranavi Shrimali",
     role: "",
     dept: "Mechanical",
-    image: "/pranavi.png",
+    image: "/pranavi_shrimali.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
     socials: { github: "#", linkedin: "https://www.linkedin.com/in/pranavi-shrimali-5b0b81349/" }
   },
@@ -94,7 +94,7 @@ const teamMembers = [
     name: "Pavan Agrawal",
     role: "",
     dept: "Avionics",
-    image: "/pavan.png",
+    image: "/pavan_agrawal.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
     socials: { github: "#", linkedin: "https://www.linkedin.com/in/pavan-agrawal-833567311/" }
   },
