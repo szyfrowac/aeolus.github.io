@@ -40,7 +40,7 @@ const AlumniMembers = [
     name: "Medha Nath",
     role: "President",
     dept: "2024",
-    image: "/bala.png", // Replace with actual paths in /public/team/
+    image: "/medha.png", // Replace with actual paths in /public/team/
     bio: "Leading the next generation of aerial innovators at BITS Hyderabad.",
     socials: { linkedin: "https://www.linkedin.com/in/bala-phanikar-challa/", github: "#", email: "f20230424@hyderabad.bits-pilani.ac.in" }
   },
@@ -49,7 +49,7 @@ const AlumniMembers = [
     name: "Malhar Rajurkar",
     role: "Vice-President",
     dept: "2024",
-    image: "/rehaan.png",
+    image: "/malhar.png",
     bio: "Focusing on CFD simulations and structural optimization for heavy-lift UAVs.",
     socials: { linkedin: "https://www.linkedin.com/in/rehaan-tahiliani-29111630b/", email: "ishani@example.com" }
   },
@@ -58,7 +58,7 @@ const AlumniMembers = [
     name: "Bala Phanikar Challa",
     role: "Treasurer",
     dept: "2024",
-    image: "/ishaan.png",
+    image: "/phanikar.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
     socials: { github: "#", linkedin: "#" }
   },
@@ -67,7 +67,7 @@ const AlumniMembers = [
     name: "Aditya Ray Baruah",
     role: "Avionics Lead",
     dept: "2024",
-    image: "/ananyakulkarni.png",
+    image: "/adiray.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
     socials: { github: "#", linkedin: "#" }
   },
@@ -76,7 +76,7 @@ const AlumniMembers = [
     name: "Aryaman Agarwal",
     role: "Mechanical Lead",
     dept: "2024",
-    image: "/aditya.png",
+    image: "/aryaman.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
     socials: { github: "#", linkedin: "#" }
   },
