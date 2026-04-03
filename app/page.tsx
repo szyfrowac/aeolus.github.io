@@ -138,11 +138,13 @@ export default function AeolusBPHC() {
   const formCardClasses = "bg-slate-800/50 border border-slate-700 rounded-lg shadow-lg backdrop-blur-sm transition-all duration-300 relative ring-1 ring-transparent hover:ring-cyan-500/50";
 
   const navItems = [
-    { id: "about", label: "About Us" },
-    { id: "projects", label: "Projects" },
-    { id: "blogs", label: "Blogs" },
-    { id: "join", label: "Join Us" },
-    { id: "contact", label: "Contact" },
+    { href: "/about", label: "About Us" },
+    { href: "/projects", label: "Projects" },
+    { href: "/blogs", label: "Blogs" },
+    { href: "/team", label: "Team" },
+    { href: "/resources", label: "Resources" },
+    { href: "/join", label: "Join Us" },
+    { href: "/contact", label: "Contact" },
   ];
 
   const Stat = ({ label, value, icon: Icon }: { label: string, value: string, icon: React.ElementType }) => (
@@ -171,7 +173,7 @@ export default function AeolusBPHC() {
           </a>
           <nav className="hidden items-center gap-6 md:flex">
             {navItems.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className={`text-sm font-medium ${mutedTextColor} hover:${accentColor} transition-colors`}>
+              <a key={n.label} href={n.href} className={`text-sm font-medium ${mutedTextColor} hover:${accentColor} transition-colors`}>
                 {n.label}
               </a>
             ))}
@@ -414,7 +416,7 @@ export default function AeolusBPHC() {
         </div>
 
         {/* Column 3: Resources */}
-        <div>
+        <div id="resources">
           <h3 className={`text-sm font-semibold ${textColor} mb-4`}>Resources</h3>
           <ul className="space-y-3">
             <li><a href="/documentation" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Documentation</a></li>

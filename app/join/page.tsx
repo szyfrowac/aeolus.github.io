@@ -78,7 +78,7 @@ export default function JoinPage() {
           <CardHeader>
             <CardTitle className="text-2xl font-semibold tracking-tight text-white">Join Aeolus</CardTitle>
             <p className="text-sm text-slate-300">
-              Fill out this form. Your response will be saved directly to our Google Sheet.
+              Fill out this form.
             </p>
           </CardHeader>
 
