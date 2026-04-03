@@ -394,10 +394,10 @@ export default function AeolusBPHC() {
         <div>
           <h3 className={`text-sm font-semibold ${textColor} mb-4`}>Club</h3>
           <ul className="space-y-3">
-            <li><a href="#about" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>About Us</a></li>
-            <li><a href="#projects" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Projects</a></li>
-            <li><a href="#join" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Join Us</a></li>
-            <li><a href="#blogs" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Blogs</a></li>
+            <li><a href="/about" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>About Us</a></li>
+            <li><a href="/projects" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Projects</a></li>
+            <li><a href="/join" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Join Us</a></li>
+            <li><a href="/blogs" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Blogs</a></li>
           </ul>
         </div>
 
@@ -406,7 +406,7 @@ export default function AeolusBPHC() {
           <h3 className={`text-sm font-semibold ${textColor} mb-4`}>About</h3>
           <ul className="space-y-3">
             <li><a href="/team" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Our Team</a></li> {/* You might need to add a #team section */}
-            <li><a href="#mission" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Our Mission</a></li> {/* You might need to add a #mission section */}
+            <li><a href="/mission" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Our Mission</a></li> {/* You might need to add a #mission section */}
             <li><a href="/alumni" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Alumni</a></li> {/* Link to a new alumni page */}
             <li><a href="/careers" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Careers</a></li> {/* If you have opportunities */}
           </ul>

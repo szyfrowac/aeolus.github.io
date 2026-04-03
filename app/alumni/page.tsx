@@ -1,21 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   ArrowLeft,
   Mail,
-  Linkedin,
-  Github,
+  Linkedin as LinkedinIcon,
+  Github as GithubIcon,
   Plus,
   Menu,
   X,
-  Sun,
-  Moon,
-  ChevronRight
 } from "lucide-react";
 
 // Using your uploaded UI components
@@ -33,104 +29,117 @@ const Fonts = () => (
   `}</style>
 );
 
-// --- Team Data Structure ---
-const AlumniMembers = [
+// --- Alumni Data (Year-wise) ---
+type AlumniMember = {
+  id: string;
+  name: string;
+  role: string;
+  year: string;
+  image: string;
+  bio: string;
+  socials: {
+    linkedin?: string;
+    github?: string;
+    email?: string;
+  };
+};
+
+const alumniMembers: AlumniMember[] = [
   {
     id: "1",
     name: "Medha Nath",
     role: "President",
-    dept: "2024",
-    image: "/medha.png", // Replace with actual paths in /public/team/
-    bio: "Leading the next generation of aerial innovators at BITS Hyderabad.",
-    socials: { linkedin: "https://www.linkedin.com/in/bala-phanikar-challa/", github: "#", email: "f20230424@hyderabad.bits-pilani.ac.in" }
+    year: "2024",
+    image: "/medha.png",
+    bio: "Led Aeolus through major competition cycles while mentoring newer batches.",
+    socials: { linkedin: "#" },
   },
   {
     id: "2",
     name: "Malhar Rajurkar",
     role: "Vice-President",
-    dept: "2024",
+    year: "2024",
     image: "/malhar.png",
-    bio: "Focusing on CFD simulations and structural optimization for heavy-lift UAVs.",
-    socials: { linkedin: "https://www.linkedin.com/in/rehaan-tahiliani-29111630b/", email: "ishani@example.com" }
+    bio: "Contributed to systems integration and team operations across core projects.",
+    socials: { linkedin: "#" },
   },
   {
     id: "3",
     name: "Bala Phanikar Challa",
     role: "Treasurer",
-    dept: "2024",
+    year: "2024",
     image: "/phanikar.png",
-    bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    bio: "Managed club finance and logistics while supporting technical execution.",
+    socials: { linkedin: "#", github: "#" },
   },
   {
     id: "4",
     name: "Aditya Ray Baruah",
     role: "Avionics Lead",
-    dept: "2024",
+    year: "2024",
     image: "/adiray.png",
-    bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    bio: "Built and validated avionics architecture for multiple UAV prototypes.",
+    socials: { linkedin: "#" },
   },
   {
     id: "5",
     name: "Aryaman Agarwal",
     role: "Mechanical Lead",
-    dept: "2024",
+    year: "2024",
     image: "/aryaman.png",
-    bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    bio: "Drove mechanical design iterations with a focus on reliability and weight.",
+    socials: { linkedin: "#" },
   },
   {
     id: "6",
     name: "Prayush Kansal",
     role: "President",
-    dept: "2023",
+    year: "2023",
     image: "/prayush.png",
-    bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    bio: "Led foundational project tracks and expanded technical participation.",
+    socials: { linkedin: "#" },
   },
   {
     id: "7",
     name: "Chaitanya Agarwal",
     role: "Vice President",
-    dept: "2023",
+    year: "2023",
     image: "/chaitanya.png",
-    bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    bio: "Supported strategic planning and coordinated cross-team initiatives.",
+    socials: { linkedin: "#" },
   },
   {
     id: "8",
     name: "Krishnendu Mathur",
     role: "Treasurer",
-    dept: "2023",
+    year: "2023",
     image: "/krishnendu.png",
-    bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    bio: "Managed budgeting and procurement for workshop and competition needs.",
+    socials: { linkedin: "#" },
   },
   {
     id: "9",
     name: "Siddhartha Mishra",
     role: "Avionics Lead",
-    dept: "2023",
+    year: "2023",
     image: "/siddhartha.png",
-    bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    bio: "Worked on avionics integration and robust electronics deployment.",
+    socials: { linkedin: "#" },
   },
   {
     id: "10",
     name: "JCS Krishna",
     role: "Mechanical Lead",
-    dept: "2023",
+    year: "2023",
     image: "/jcs.png",
-    bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
-  }
+    bio: "Contributed to structural design and manufacturing process refinement.",
+    socials: { linkedin: "#" },
+  },
 ];
 
 // --- Floating Header (Defined locally to avoid "Module Not Found") ---
 const FloatingHeader = ({ onCreateNew }: { onCreateNew: () => void }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(true);
 
     const navItems = [
       { id: "about", label: "About Us" },
@@ -177,11 +186,19 @@ const FloatingHeader = ({ onCreateNew }: { onCreateNew: () => void }) => {
 };
 
 export default function AlumniPage() {
-  const [activeDept, setActiveDept] = useState("All");
   const router = useRouter();
 
-  const departments = ["All", "2024", "2023", "2022", "2021", "2020"];
-  const filteredAlumni = AlumniMembers.filter(m => activeDept === "All" || m.dept === activeDept);
+  const alumniByYear = useMemo(() => {
+    const grouped = alumniMembers.reduce<Record<string, AlumniMember[]>>((acc, member) => {
+      if (!acc[member.year]) {
+        acc[member.year] = [];
+      }
+      acc[member.year].push(member);
+      return acc;
+    }, {});
+
+    return Object.entries(grouped).sort(([yearA], [yearB]) => Number(yearB) - Number(yearA));
+  }, []);
 
   // Styling constants matching your blogs page
   const textColor = "text-slate-100";
@@ -205,64 +222,68 @@ export default function AlumniPage() {
           <h1 className={`text-4xl font-bold tracking-tight ${textColor} font-display`}>
             Our <span className={accentColor}>Alumni</span>
           </h1>
-          <p className="mt-2 text-lg text-slate-400">The minds engineering the future of flight at BITS Hyderabad.</p>
+          <p className="mt-2 text-lg text-slate-400">Year-wise archive of the people who helped build Aeolus.</p>
         </div>
 
-        {/* Dept Filters */}
-        <div className="mb-12 flex flex-wrap gap-2 justify-center md:justify-start">
-          {departments.map(dept => (
-            <button
-              key={dept}
-              onClick={() => setActiveDept(dept)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                activeDept === dept ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
-              }`}
-            >
-              {dept}
-            </button>
-          ))}
-        </div>
-
-        {/* Team Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence mode="popLayout">
-            {filteredAlumni.map((member) => (
-              <motion.div
-                key={member.id}
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-              >
-                <Card className={cardClasses}>
-                  <div className="relative h-64 w-full overflow-hidden">
-                    <img 
-                      src={member.image} 
-                      alt={member.name} 
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
-                  </div>
-                  
-                  <CardHeader className="relative -mt-12 bg-transparent">
-                    <Badge className="bg-cyan-900/50 border-cyan-400/30 text-cyan-300 mb-2">{member.dept}</Badge>
-                    <CardTitle className={`font-display text-xl ${textColor}`}>{member.name}</CardTitle>
-                    <p className="text-cyan-400 text-sm font-medium">{member.role}</p>
-                  </CardHeader>
-
-                  <CardContent>
-                    <p className={`text-sm ${mutedTextColor} mb-6`}>{member.bio}</p>
-                    <div className="flex gap-4 border-t border-slate-700 pt-4">
-                      {member.socials.linkedin && <Linkedin className="h-5 w-5 cursor-pointer hover:text-cyan-400" />}
-                      {member.socials.github && <Github className="h-5 w-5 cursor-pointer hover:text-cyan-400" />}
-                      {member.socials.email && <Mail className="h-5 w-5 cursor-pointer hover:text-cyan-400" />}
+        {alumniByYear.map(([year, members]) => (
+          <section key={year} className="mb-14 last:mb-0">
+            <h2 className={`mb-6 text-2xl font-display font-bold ${textColor}`}>
+              Batch of <span className={accentColor}>{year}</span>
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {members.map((member, index) => (
+                <motion.div
+                  key={member.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.35, delay: index * 0.04 }}
+                >
+                  <Card className={cardClasses}>
+                    <div className="relative h-64 w-full overflow-hidden">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                        onError={(e) => {
+                          e.currentTarget.src = "/aeoluscover.png";
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+
+                    <CardHeader className="relative -mt-12 bg-transparent">
+                      <Badge className="bg-cyan-900/50 border-cyan-400/30 text-cyan-300 mb-2">{year}</Badge>
+                      <CardTitle className={`font-display text-xl ${textColor}`}>{member.name}</CardTitle>
+                      <p className="text-cyan-400 text-sm font-medium">{member.role}</p>
+                    </CardHeader>
+
+                    <CardContent>
+                      <p className={`text-sm ${mutedTextColor} mb-6`}>{member.bio}</p>
+                      <div className="flex gap-4 border-t border-slate-700 pt-4">
+                        {member.socials.linkedin && member.socials.linkedin !== "#" && (
+                          <a href={member.socials.linkedin} target="_blank" rel="noopener noreferrer">
+                            <LinkedinIcon className="h-5 w-5 cursor-pointer hover:text-cyan-400 transition-colors" />
+                          </a>
+                        )}
+                        {member.socials.github && member.socials.github !== "#" && (
+                          <a href={member.socials.github} target="_blank" rel="noopener noreferrer">
+                            <GithubIcon className="h-5 w-5 cursor-pointer hover:text-cyan-400 transition-colors" />
+                          </a>
+                        )}
+                        {member.socials.email && (
+                          <a href={`mailto:${member.socials.email}`}>
+                            <Mail className="h-5 w-5 cursor-pointer hover:text-cyan-400 transition-colors" />
+                          </a>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        ))}
       </main>
 
       <footer className="bg-slate-900 border-t border-slate-800 py-12 text-center text-sm text-slate-500">
