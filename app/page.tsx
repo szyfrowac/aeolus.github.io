@@ -194,8 +194,8 @@ export default function AeolusBPHC() {
                 Aeolus is the premier aerial robotics club of BITS Pilani, Hyderabad, dedicated to excellence in unmanned aerial vehicle technology and innovation.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <a href="#join"><Button size="lg" className={heroPrimaryButtonClasses}>Become a Member <ChevronRight className="ml-1 h-4 w-4" /></Button></a>
-                <a href="#projects"><Button size="lg" className={heroSecondaryButtonClasses}>See Our Work</Button></a>
+                <a href="/join"><Button size="lg" className={heroPrimaryButtonClasses}>Become a Member <ChevronRight className="ml-1 h-4 w-4" /></Button></a>
+                <a href="/projects"><Button size="lg" className={heroSecondaryButtonClasses}>See Our Work</Button></a>
               </div>
             </motion.div>
           </div>
