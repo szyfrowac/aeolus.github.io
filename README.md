@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌪️ Aeolus BPHC — Aerial Robotics Club Website
 
-## Getting Started
+Welcome to the official website repository of **Aeolus**, the Aerial Robotics and Drone Racing Club of **BITS Pilani, Hyderabad Campus**.
 
-First, run the development server:
+> We don’t just build drones.  
+> We design flying ideas, race them through neon gates, and teach them to solve real-world problems.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🧭 About Aeolus
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Aeolus is the aerial robotics club of BPHC, focused on designing, building, and deploying unmanned aerial systems (UAVs) for innovation, competition, and impact.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 🚁 Work on **aerial robotics & UAV systems**
+- 🧠 Solve **real-world engineering problems using drones**
+- 🌍 Participate in **national & international competitions**
+- ⚙️ Explore domains like:
+  - Avionics  
+  - Control Systems  
+  - Embedded Systems  
+  - Computer Vision  
+  - Aerodynamics  
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ What We Do
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🔧 Hands-on Engineering
+From frame design to flight control, members build drones from scratch and experiment with cutting-edge tech.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🏁 Drone Racing & Events
+Aeolus hosts and participates in high-speed FPV racing events like **IDRL (Indian Drone Racing League)**, bringing adrenaline and precision together.
 
-## Deploy on Vercel
+### 🎓 Workshops & Learning
+We conduct beginner-friendly to advanced workshops covering:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- CAD & Design (Fusion 360)
+- Drone assembly & electronics
+- Flight dynamics & control
+- Simulation & real-world testing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🚀 Competitions
+Aeolus represents BPHC in global competitions and challenges involving aerial robotics and autonomous systems.
+
+---
+
+## 🎥 Glimpse of Our Work
+
+### 🧩 CAD Workshop
+A 2-day immersive workshop introducing students to design thinking and CAD using Fusion 360.
+
+### 🚁 Quadcopter Workshop
+Participants build drones from scratch and understand the physics and electronics behind UAV systems.
+
+### 🌌 IDRL Drone Racing
+High-speed drone racing at ATMOS, featuring world-class pilots and tracks exceeding 350m.
+
+### 👥 Community & Collaboration
+A thriving community of builders, thinkers, and flyers pushing the boundaries of aerial innovation.
+
+---
+
+## 🌐 Social Presence
+
+📸 Instagram: https://www.instagram.com/aeolusbphc/  
+Stay updated with events, builds, competitions, and behind-the-scenes action.
+
+---
+
+## 🏗️ Website Overview
+
+This repository contains the source code for the Aeolus website.
+
+### ✨ Features
+- Modern, responsive UI
+- Event showcases (Workshops, IDRL, Projects)
+- Club information & onboarding
+- Media gallery
+- Recruitment/induction sections
