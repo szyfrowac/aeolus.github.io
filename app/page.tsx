@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 import { motion, Variants } from "framer-motion";
 // Note: You'll need to install these dependencies if you haven't already
 // npm install lucide-react framer-motion
@@ -395,7 +396,7 @@ export default function AeolusBPHC() {
           <h3 className={`text-sm font-semibold ${textColor} mb-4`}>Club</h3>
           <ul className="space-y-3">
             <li><a href="/about" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>About Us</a></li>
-            <li><a href="/projects" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Projects</a></li>
+            <li><Link href="/projects" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Projects</Link></li>
             <li><a href="/join" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Join Us</a></li>
             <li><a href="/blogs" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Blogs</a></li>
           </ul>
