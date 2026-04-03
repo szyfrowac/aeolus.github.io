@@ -85,7 +85,7 @@ const AlumniMembers = [
     name: "Prayush Kansal",
     role: "President",
     dept: "2023",
-    image: "/pranavi.png",
+    image: "/",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
     socials: { github: "#", linkedin: "#" }
   },
@@ -94,7 +94,7 @@ const AlumniMembers = [
     name: "Chaitanya Agarwal",
     role: "Vice President",
     dept: "2023",
-    image: "/pavan.png",
+    image: "/",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
     socials: { github: "#", linkedin: "#" }
   },
@@ -103,7 +103,7 @@ const AlumniMembers = [
     name: "Krishnendu Mathur",
     role: "Treasurer",
     dept: "2023",
-    image: "/srijan.png",
+    image: "/",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
     socials: { github: "#", linkedin: "#" }
   },
