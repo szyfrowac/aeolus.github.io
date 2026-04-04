@@ -130,9 +130,9 @@ const teamMembers = [
     name: "Rishit Gotecha",
     role: "",
     dept: "Avionics",
-    image: "/",
+    image: "/rishit.png",
     bio: "Developing computer vision stacks for autonomous obstacle avoidance.",
-    socials: { github: "#", linkedin: "#" }
+    socials: { github: "#", linkedin: "https://www.linkedin.com/in/rishit-gotecha-2965802b0/" }
   },
   {
     id: "12",
