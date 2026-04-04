@@ -381,10 +381,10 @@ export default function AeolusBPHC() {
         </p>
         <div className="mt-6 flex gap-4">
           {/* Social Media Icons */}
-          <a href="#" className={`text-slate-500 hover:${accentColor} transition-colors`}>
+          <a href="https://www.instagram.com/aeolusbphc?igsh=MWJhdWF5eWdsOG5pMg==" className={`text-slate-500 hover:${accentColor} transition-colors`}>
             <Instagram className="h-6 w-6" />
           </a>
-          <a href="#" className={`text-slate-500 hover:${accentColor} transition-colors`}>
+          <a href="https://www.linkedin.com/company/aeolus-bphc/" className={`text-slate-500 hover:${accentColor} transition-colors`}>
             <Linkedin className="h-6 w-6" />
           </a>
           {/* Add more social icons as needed */}
@@ -420,7 +420,7 @@ export default function AeolusBPHC() {
           <h3 className={`text-sm font-semibold ${textColor} mb-4`}>Resources</h3>
           <ul className="space-y-3">
             <li><a href="/documentation" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Documentation</a></li>
-            <li><a href="#contact" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Support</a></li>
+            <li><a href="/contact" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Support</a></li>
             <li><a href="/privacy" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Privacy Policy</a></li>
             <li><a href="/terms" className={`text-sm ${mutedTextColor} hover:${accentColor} transition-colors`}>Terms of Service</a></li>
           </ul>
